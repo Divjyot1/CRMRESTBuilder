@@ -3796,7 +3796,8 @@ Xrm.RESTBuilder.BuildObjectString_WebApi = function () {
 		if (field.length === 0) {
 			continue;
 		}
-		var logical = field[0].SchemaName;
+		var logical = field[0].LogicalName;
+		var schema = field[0].SchemaName;
 		var val1 = $(tr).find("input:first").val();
 		var sel1 = $(tr).find("select:eq(1)").val();
 
@@ -3805,29 +3806,29 @@ Xrm.RESTBuilder.BuildObjectString_WebApi = function () {
 			case "Double":
 			case "Decimal":
 				var decAttr = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.LogicalName === logical; });
-				js.push(Xrm.RESTBuilder.REST_Decimal(logical, val1, decAttr[0].Precision));
+				js.push(Xrm.RESTBuilder.REST_Decimal(schema, val1, decAttr[0].Precision));
 				break;
 			case "Money":
 				var doubAttr = $.grep(Xrm.RESTBuilder.CurrentEntityAttributes, function (e) { return e.LogicalName === logical; });
-				js.push(Xrm.RESTBuilder.REST_Money_WebApi(logical, val1, doubAttr[0].Precision));
+				js.push(Xrm.RESTBuilder.REST_Money_WebApi(schema, val1, doubAttr[0].Precision));
 				break;
 			case "Integer":
-				js.push(Xrm.RESTBuilder.REST_Integer(logical, val1));
+				js.push(Xrm.RESTBuilder.REST_Integer(schema, val1));
 				break;
 			case "Uniqueidentifier":
-				js.push(Xrm.RESTBuilder.REST_Uniqueidentifier(logical, val1));
+				js.push(Xrm.RESTBuilder.REST_Uniqueidentifier(schema, val1));
 				break;
 			case "Memo":
 			case "String":
-				js.push(Xrm.RESTBuilder.REST_String(logical, val1));
+				js.push(Xrm.RESTBuilder.REST_String(schema, val1));
 				break;
 			case "Boolean":
-				js.push(Xrm.RESTBuilder.REST_Boolean(logical, sel1));
+				js.push(Xrm.RESTBuilder.REST_Boolean(schema, sel1));
 				break;
 			case "State":
 			case "Status":
 			case "Picklist":
-				js.push(Xrm.RESTBuilder.REST_Picklist_WebApi(logical, sel1));
+				js.push(Xrm.RESTBuilder.REST_Picklist_WebApi(schema, sel1));
 				break;
 			case "Customer":
 			case "Lookup":
@@ -3836,14 +3837,14 @@ Xrm.RESTBuilder.BuildObjectString_WebApi = function () {
 				if ($(tr).find("select:eq(1) option").size() > 1) {
 					relatedLogical = $(tr).find("select:eq(1) option:selected").attr("logicalname");
 				}
-				js.push(Xrm.RESTBuilder.REST_Lookup_WebApi(logical, val1, entitySetName, relatedLogical));
+				js.push(Xrm.RESTBuilder.REST_Lookup_WebApi(schema, val1, entitySetName, relatedLogical));
 				break;
 			case "DateTime":
-				js.push(Xrm.RESTBuilder.REST_DateTime_WebApi(logical, val1, sel1));
+				js.push(Xrm.RESTBuilder.REST_DateTime_WebApi(schema, val1, sel1));
 				break;
 			case "EntityName":
 				var value = $(tr).find("select:eq(1) option:selected").attr("logicalname");
-				js.push(Xrm.RESTBuilder.REST_EntityName(logical, value));
+				js.push(Xrm.RESTBuilder.REST_EntityName(schema, value));
 				break;
 		}
 	}
